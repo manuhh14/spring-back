@@ -14,10 +14,12 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUsuario;    
+    private Long idUsuario;
 
-    @Column(nullable = false, unique = true)
+
+    @Column(name = "correo", nullable = false, unique = true)
     private String correo;
+
 
     @Column(nullable = false)
     private String password;
@@ -27,7 +29,7 @@ public class Usuario {
     private RoleUsuario rol;
 
     @Column(nullable = false)
-    private LocalDateTime fechaRegistro= LocalDateTime.now();
+    private LocalDateTime fechaRegistro = LocalDateTime.now();
 
     @Column(nullable = false)
     private Boolean activo = true;
