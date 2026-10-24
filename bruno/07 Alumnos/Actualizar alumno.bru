@@ -1,0 +1,30 @@
+meta {
+  name: Actualizar alumno
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/alumnos/{{numeroControl}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+body:json {
+  {
+    "nombreCompleto": "Alumno Prueba",
+    "carrera": "Ingeniería en Sistemas",
+    "semestre": 9,
+    "habilidadesTecnicas": "Java, Spring, SQL"
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

@@ -27,9 +27,10 @@ public class Alumno {
     @Column(nullable = false)
     private int semestre;
 
-    @Column(columnDefinition = "TEXT")
-    private String habilidadestecnicas;
+    @Column(name = "habilidadestecnicas", columnDefinition = "TEXT")
+    private String habilidadesTecnicas;
 
     @Enumerated(EnumType.STRING)
-    private EstadoResidencia estadoResidencia;
+    @Column(nullable = false)
+    private EstadoResidencia estadoResidencia = EstadoResidencia.PENDIENTE;
 }

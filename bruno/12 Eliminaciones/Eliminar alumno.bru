@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar alumno
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{baseUrl}}/api/alumnos/{{numeroControl2}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}

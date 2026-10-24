@@ -1,0 +1,25 @@
+meta {
+  name: Catalogo de habilidades
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/recomendaciones/catalogo-habilidades?busqueda=java
+  body: none
+  auth: bearer
+}
+
+params:query {
+  busqueda: java
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

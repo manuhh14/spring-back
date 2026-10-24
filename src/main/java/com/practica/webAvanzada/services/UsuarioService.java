@@ -1,59 +1,93 @@
 package com.practica.webAvanzada.services;
 
+import com.practica.webAvanzada.dto.*;
+import com.practica.webAvanzada.exceptions.CredencialesInvalidasException;
+import com.practica.webAvanzada.exceptions.RecursoNoEncontradoException;
+import com.practica.webAvanzada.exceptions.ReglaNegocioException;
 import com.practica.webAvanzada.models.Usuario;
+import com.practica.webAvanzada.models.enums.RoleUsuario;
 import com.practica.webAvanzada.repositories.UsuarioRepository;
+import com.practica.webAvanzada.security.JwtService;
+import com.practica.webAvanzada.security.UsuarioActual;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder; // Inyectamos el encriptador
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public Usuario guardar(Usuario usuario) {
-        // Encriptamos el texto plano antes de mandarlo a la base de datos
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+    @Transactional(readOnly = true)
+    public Page<UsuarioResponse> obtenerTodos(Pageable pageable) {
+        return usuarioRepository.findAll(pageable).map(UsuarioResponse::de);
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioResponse obtenerPorId(Long id) {
+        return UsuarioResponse.de(buscar(id));
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioResponse obtenerActual(UsuarioActual actual) {
+        return UsuarioResponse.de(buscar(actual.idUsuario()));
+    }
+
+    @Transactional
+    public UsuarioResponse crear(UsuarioRequest request) {
+        return UsuarioResponse.de(crearUsuario(request.correo(), request.password(), request.rol()));
+    }
+
+    @Transactional
+    public Usuario crearUsuario(String correo, String passwordPlano, RoleUsuario rol) {
+        if (usuarioRepository.existsByCorreo(correo)) {
+            throw new ReglaNegocioException("Ya existe un usuario con el correo " + correo);
+        }
+        Usuario usuario = new Usuario();
+        usuario.setCorreo(correo);
+        usuario.setPassword(passwordEncoder.encode(passwordPlano));
+        usuario.setRol(rol);
         return usuarioRepository.save(usuario);
     }
 
-    public List<Usuario> obtenerTodos() {
-        return usuarioRepository.findAll();
+    @Transactional
+    public UsuarioResponse actualizar(Long id, UsuarioUpdateRequest request) {
+        Usuario usuario = buscar(id);
+        if (!usuario.getCorreo().equals(request.correo()) && usuarioRepository.existsByCorreo(request.correo())) {
+            throw new ReglaNegocioException("Ya existe un usuario con el correo " + request.correo());
+        }
+        usuario.setCorreo(request.correo());
+        usuario.setActivo(request.activo());
+        if (request.password() != null && !request.password().isBlank()) {
+            usuario.setPassword(passwordEncoder.encode(request.password()));
+        }
+        return UsuarioResponse.de(usuario);
     }
 
-    public Optional<Usuario> obtenerPorId(Long id) {
-        return usuarioRepository.findById(id);
-    }
-
+    // Si el usuario tiene un perfil (alumno, empresa, asesor) la FK lo impide y se responde 409
+    @Transactional
     public void eliminar(Long id) {
-        usuarioRepository.deleteById(id);
+        usuarioRepository.delete(buscar(id));
+        usuarioRepository.flush();
     }
 
-    public Usuario actualizar(Long id, Usuario usuarioActualizado) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioActualizado.setIdUsuario(id);
-            // Si también quieres permitir actualizar la contraseña, deberías encriptarla aquí de nuevo
-            return usuarioRepository.save(usuarioActualizado);
-        }
-        return null;
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest request) {
+        Usuario usuario = usuarioRepository.findByCorreo(request.correo())
+                .filter(u -> passwordEncoder.matches(request.password(), u.getPassword()))
+                .filter(Usuario::getActivo)
+                .orElseThrow(CredencialesInvalidasException::new);
+        return new LoginResponse(jwtService.generarToken(usuario), "Bearer",
+                jwtService.getExpiracionSegundos(), UsuarioResponse.de(usuario));
     }
 
-    // NUEVO MÉTODO: Lógica de Login
-    public Usuario login(String correo, String passwordPlano) {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
-
-        if (usuarioOpt.isPresent()) {
-            Usuario usuario = usuarioOpt.get();
-            // Comparamos el password plano que llega de Postman con el Hash de la BD
-            if (passwordEncoder.matches(passwordPlano, usuario.getPassword())) {
-                return usuario; // Login exitoso
-            }
-        }
-        return null;
+    private Usuario buscar(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Usuario", id));
     }
 }

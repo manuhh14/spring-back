@@ -1,0 +1,33 @@
+meta {
+  name: Registro empresa
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/auth/registro/empresa
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "empresa{{sufijo}}@test.com",
+    "password": "Password123",
+    "razonSocial": "Empresa {{sufijo}} SA",
+    "sector": "TI",
+    "nombreContacto": "Laura Pérez",
+    "telefono": "5551234567",
+    "direccion": "Av. Siempre Viva 123"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idEmpresa", res.body.idEmpresa);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

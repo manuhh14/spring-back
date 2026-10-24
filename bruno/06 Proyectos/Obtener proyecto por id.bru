@@ -1,0 +1,21 @@
+meta {
+  name: Obtener proyecto por id
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/proyectos/{{idProyecto}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

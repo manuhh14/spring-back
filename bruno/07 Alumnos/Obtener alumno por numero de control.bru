@@ -1,0 +1,21 @@
+meta {
+  name: Obtener alumno por numero de control
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/alumnos/{{numeroControl}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

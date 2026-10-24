@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar documento
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/api/documentos/{{idDocumentoAnteproyecto}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}

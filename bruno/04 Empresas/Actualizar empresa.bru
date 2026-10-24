@@ -1,0 +1,31 @@
+meta {
+  name: Actualizar empresa
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/empresas/{{idEmpresa}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+body:json {
+  {
+    "razonSocial": "Empresa {{sufijo}} SA de CV",
+    "sector": "TI",
+    "nombreContacto": "Laura Pérez",
+    "telefono": "5550000000",
+    "direccion": "Av. Reforma 456"
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

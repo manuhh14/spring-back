@@ -1,0 +1,32 @@
+meta {
+  name: Registro alumno temporal
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/auth/registro/alumno
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "alumno{{sufijo}}b@test.com",
+    "password": "Password123",
+    "numeroControl": "B{{sufijo}}",
+    "nombreCompleto": "Alumno Temporal",
+    "carrera": "Ingeniería en Sistemas",
+    "semestre": 8
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("numeroControl2", res.body.numeroControl);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

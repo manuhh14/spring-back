@@ -1,0 +1,21 @@
+meta {
+  name: Descargar PDF
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/documentos/{{idDocumento}}/archivo
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAsesor}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

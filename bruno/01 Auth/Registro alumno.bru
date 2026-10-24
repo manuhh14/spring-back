@@ -1,0 +1,34 @@
+meta {
+  name: Registro alumno
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/auth/registro/alumno
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "alumno{{sufijo}}@test.com",
+    "password": "Password123",
+    "numeroControl": "A{{sufijo}}",
+    "nombreCompleto": "Alumno Prueba",
+    "carrera": "Ingeniería en Sistemas",
+    "semestre": 9,
+    "habilidadesTecnicas": "Java, Spring"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("numeroControl", res.body.numeroControl);
+  if (res.status === 201) bru.setVar("idUsuarioAlumno", res.body.idUsuario);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

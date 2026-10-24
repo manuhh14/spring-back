@@ -1,0 +1,21 @@
+meta {
+  name: Alumno cancela su postulacion
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/api/postulaciones/{{idPostulacion2}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno2}}
+}
+
+tests {
+  test("responde 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}

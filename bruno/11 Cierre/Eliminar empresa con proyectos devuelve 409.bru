@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar empresa con proyectos devuelve 409
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/api/empresas/{{idEmpresa}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 409", function () {
+    expect(res.status).to.equal(409);
+  });
+}

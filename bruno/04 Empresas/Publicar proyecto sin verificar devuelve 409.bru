@@ -1,0 +1,28 @@
+meta {
+  name: Publicar proyecto sin verificar devuelve 409
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/proyectos
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+body:json {
+  {
+    "titulo": "No permitido",
+    "cupoAlumnos": 1
+  }
+}
+
+tests {
+  test("responde 409", function () {
+    expect(res.status).to.equal(409);
+  });
+}

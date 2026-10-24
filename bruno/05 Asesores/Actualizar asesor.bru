@@ -1,0 +1,29 @@
+meta {
+  name: Actualizar asesor
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/asesores/{{idAsesor}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "nombreCompleto": "Dr. Asesor Prueba",
+    "departamento": "Sistemas y Computación",
+    "maximoAlumnos": 4
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Postulaciones de un proyecto
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/proyectos/{{idProyecto}}/postulaciones
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

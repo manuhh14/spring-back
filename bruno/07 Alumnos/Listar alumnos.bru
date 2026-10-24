@@ -1,0 +1,26 @@
+meta {
+  name: Listar alumnos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/alumnos?page=0&size=20
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 0
+  size: 20
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

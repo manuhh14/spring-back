@@ -16,19 +16,24 @@ public class Postulacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPostulacion;
 
-    // Relación Muchos a Uno con Alumno (La llave foránea es numero_control)
     @ManyToOne
     @JoinColumn(name = "numero_control", referencedColumnName = "numeroControl", nullable = false)
     private Alumno alumno;
 
-    // Relación Muchos a Uno con ProyectoResidencia
     @ManyToOne
     @JoinColumn(name = "id_proyecto", nullable = false)
     private ProyectoResidencia proyecto;
 
+    // Asesor académico que da seguimiento a la residencia (se asigna al aceptar la postulación)
+    @ManyToOne
+    @JoinColumn(name = "id_asesor")
+    private AsesorAcademico asesor;
+
+    @Column(nullable = false)
     private LocalDate fechaSolicitud;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoPostulacion estado;
 
     @Column(columnDefinition = "TEXT")

@@ -1,0 +1,34 @@
+meta {
+  name: Subir anteproyecto
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/documentos?idPostulacion={{idPostulacion}}&tipoDocumento=ANTEPROYECTO
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  idPostulacion: {{idPostulacion}}
+  tipoDocumento: ANTEPROYECTO
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+body:multipart-form {
+  archivo: @file(archivos/prueba.pdf)
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idDocumentoAnteproyecto", res.body.idDocumento);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

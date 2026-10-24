@@ -1,0 +1,33 @@
+meta {
+  name: Crear usuario admin
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/usuarios
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "correo": "admin{{sufijo}}@test.com",
+    "password": "Password123",
+    "rol": "ADMIN"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idUsuarioNuevo", res.body.idUsuario);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

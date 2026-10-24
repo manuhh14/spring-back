@@ -1,0 +1,32 @@
+meta {
+  name: Publicar proyecto temporal
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/proyectos
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa2}}
+}
+
+body:json {
+  {
+    "titulo": "Proyecto temporal",
+    "cupoAlumnos": 1
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idProyecto2", res.body.idProyecto);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

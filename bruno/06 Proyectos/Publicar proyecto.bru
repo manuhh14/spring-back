@@ -1,0 +1,35 @@
+meta {
+  name: Publicar proyecto
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/proyectos
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+body:json {
+  {
+    "titulo": "Sistema de inventarios {{sufijo}}",
+    "descripcion": "Desarrollo de un sistema web de inventarios",
+    "objetivo": "Automatizar el control de almacén",
+    "tecnologiasRequeridas": "Java, Spring Boot, PostgreSQL",
+    "cupoAlumnos": 2
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idProyecto", res.body.idProyecto);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

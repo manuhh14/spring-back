@@ -1,0 +1,30 @@
+meta {
+  name: Subir archivo que no es PDF devuelve 400
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/documentos?idPostulacion={{idPostulacion}}&tipoDocumento=ANTEPROYECTO
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  idPostulacion: {{idPostulacion}}
+  tipoDocumento: ANTEPROYECTO
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+body:multipart-form {
+  archivo: @file(archivos/no-es-pdf.txt)
+}
+
+tests {
+  test("responde 400", function () {
+    expect(res.status).to.equal(400);
+  });
+}

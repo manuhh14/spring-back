@@ -1,0 +1,27 @@
+meta {
+  name: Listar proyectos disponibles
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/proyectos?estado=DISPONIBLE&page=0&size=20
+  body: none
+  auth: bearer
+}
+
+params:query {
+  estado: DISPONIBLE
+  page: 0
+  size: 20
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

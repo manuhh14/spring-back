@@ -1,0 +1,21 @@
+meta {
+  name: Recomendaciones solo para alumnos devuelve 403
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/recomendaciones/proyectos
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+tests {
+  test("responde 403", function () {
+    expect(res.status).to.equal(403);
+  });
+}

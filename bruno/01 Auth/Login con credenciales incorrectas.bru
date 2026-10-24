@@ -1,0 +1,24 @@
+meta {
+  name: Login con credenciales incorrectas
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "{{adminCorreo}}",
+    "password": "incorrecta"
+  }
+}
+
+tests {
+  test("responde 401", function () {
+    expect(res.status).to.equal(401);
+  });
+}

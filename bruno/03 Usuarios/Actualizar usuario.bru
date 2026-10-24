@@ -1,0 +1,28 @@
+meta {
+  name: Actualizar usuario
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/usuarios/{{idUsuarioNuevo}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "correo": "admin{{sufijo}}b@test.com",
+    "activo": false
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

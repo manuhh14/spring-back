@@ -1,0 +1,25 @@
+meta {
+  name: Proyectos recomendados
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/recomendaciones/proyectos?limite=10
+  body: none
+  auth: bearer
+}
+
+params:query {
+  limite: 10
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

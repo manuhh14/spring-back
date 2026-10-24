@@ -1,0 +1,25 @@
+meta {
+  name: Habilidades sugeridas
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/recomendaciones/habilidades?limite=10
+  body: none
+  auth: bearer
+}
+
+params:query {
+  limite: 10
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

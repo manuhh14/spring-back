@@ -16,7 +16,6 @@ public class ProyectoResidencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProyecto;
 
-    // Relación Muchos a Uno con Empresa
     @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
     private Empresa empresa;

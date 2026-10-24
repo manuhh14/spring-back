@@ -1,0 +1,27 @@
+meta {
+  name: Verificar empresa
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/api/empresas/{{idEmpresa}}/verificacion
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "verificada": true
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

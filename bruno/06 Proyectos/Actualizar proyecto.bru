@@ -1,0 +1,31 @@
+meta {
+  name: Actualizar proyecto
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/proyectos/{{idProyecto}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+body:json {
+  {
+    "titulo": "Sistema de inventarios {{sufijo}} v2",
+    "descripcion": "Desarrollo de un sistema web de inventarios",
+    "objetivo": "Automatizar el control de almacén",
+    "tecnologiasRequeridas": "Java, Spring Boot, PostgreSQL, React",
+    "cupoAlumnos": 2
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

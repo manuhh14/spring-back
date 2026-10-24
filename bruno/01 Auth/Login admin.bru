@@ -1,0 +1,32 @@
+meta {
+  name: Login admin
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "{{adminCorreo}}",
+    "password": "{{adminPassword}}"
+  }
+}
+
+script:pre-request {
+  bru.setVar("sufijo", String(Date.now()).slice(-7));
+}
+
+script:post-response {
+  if (res.status === 200) bru.setVar("tokenAdmin", res.body.token);
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

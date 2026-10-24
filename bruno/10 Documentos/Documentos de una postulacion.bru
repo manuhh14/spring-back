@@ -1,0 +1,21 @@
+meta {
+  name: Documentos de una postulacion
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/postulaciones/{{idPostulacion}}/documentos
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAsesor}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

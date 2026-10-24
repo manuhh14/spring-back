@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar asesor con residencias devuelve 409
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/asesores/{{idAsesor}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 409", function () {
+    expect(res.status).to.equal(409);
+  });
+}

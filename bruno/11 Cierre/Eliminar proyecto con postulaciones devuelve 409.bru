@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar proyecto con postulaciones devuelve 409
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/proyectos/{{idProyecto}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+tests {
+  test("responde 409", function () {
+    expect(res.status).to.equal(409);
+  });
+}

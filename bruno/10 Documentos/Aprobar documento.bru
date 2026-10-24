@@ -1,0 +1,27 @@
+meta {
+  name: Aprobar documento
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/api/documentos/{{idDocumento}}/revision
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAsesor}}
+}
+
+body:json {
+  {
+    "aprobado": true
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Listar documentos
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/documentos
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

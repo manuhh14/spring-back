@@ -1,0 +1,21 @@
+meta {
+  name: Asesor eliminado devuelve 404
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/asesores/{{idAsesor2}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 404", function () {
+    expect(res.status).to.equal(404);
+  });
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Crear asesor
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/asesores
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "correo": "asesor{{sufijo}}@test.com",
+    "password": "Password123",
+    "nombreCompleto": "Dr. Asesor Prueba",
+    "departamento": "Sistemas y Computación",
+    "maximoAlumnos": 5
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idAsesor", res.body.idAsesor);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

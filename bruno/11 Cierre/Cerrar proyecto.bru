@@ -1,0 +1,21 @@
+meta {
+  name: Cerrar proyecto
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/proyectos/{{idProyecto}}/cerrar
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

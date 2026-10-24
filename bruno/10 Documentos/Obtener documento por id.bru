@@ -1,0 +1,21 @@
+meta {
+  name: Obtener documento por id
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/documentos/{{idDocumento}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

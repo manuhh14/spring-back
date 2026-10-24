@@ -1,0 +1,31 @@
+meta {
+  name: Postulacion temporal
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/postulaciones
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno2}}
+}
+
+body:json {
+  {
+    "idProyecto": {{idProyecto2}}
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idPostulacion2", res.body.idPostulacion);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

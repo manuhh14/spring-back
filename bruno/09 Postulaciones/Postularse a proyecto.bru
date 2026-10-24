@@ -1,0 +1,31 @@
+meta {
+  name: Postularse a proyecto
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/postulaciones
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAlumno}}
+}
+
+body:json {
+  {
+    "idProyecto": {{idProyecto}}
+  }
+}
+
+script:post-response {
+  if (res.status === 201) bru.setVar("idPostulacion", res.body.idPostulacion);
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.status).to.equal(201);
+  });
+}

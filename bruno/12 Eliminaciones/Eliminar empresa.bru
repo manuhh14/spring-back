@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar empresa
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/api/empresas/{{idEmpresa2}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenAdmin}}
+}
+
+tests {
+  test("responde 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}

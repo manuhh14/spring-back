@@ -1,0 +1,28 @@
+meta {
+  name: Aceptar postulacion
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/api/postulaciones/{{idPostulacion}}/estado
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa}}
+}
+
+body:json {
+  {
+    "estado": "ACEPTADO",
+    "comentarios": "Bienvenido al proyecto"
+  }
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

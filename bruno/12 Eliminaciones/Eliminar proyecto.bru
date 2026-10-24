@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar proyecto
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/api/proyectos/{{idProyecto2}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{tokenEmpresa2}}
+}
+
+tests {
+  test("responde 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}
