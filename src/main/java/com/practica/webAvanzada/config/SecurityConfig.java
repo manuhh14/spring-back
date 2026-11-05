@@ -55,6 +55,8 @@ public class SecurityConfig {
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        // Público para autocompletar habilidades en el registro, antes de tener token
+                        .requestMatchers(HttpMethod.GET, "/api/recomendaciones/catalogo-habilidades").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/error").permitAll()
                         // El resto requiere token; los permisos por rol se definen con @PreAuthorize

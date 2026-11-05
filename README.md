@@ -90,7 +90,7 @@ Los tests usan el perfil `test` con una base H2 en memoria, así que no necesita
 
 ## Endpoints
 
-Todos requieren `Authorization: Bearer <token>` salvo `/api/auth/**` y Swagger.
+Todos requieren `Authorization: Bearer <token>` salvo `/api/auth/**`, `GET /api/recomendaciones/catalogo-habilidades` (se usa en el registro) y Swagger.
 
 | Recurso | Endpoints principales |
 |---|---|

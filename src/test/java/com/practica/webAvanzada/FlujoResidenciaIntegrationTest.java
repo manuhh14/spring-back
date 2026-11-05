@@ -100,6 +100,11 @@ class FlujoResidenciaIntegrationTest {
     void seguridadYValidaciones() throws Exception {
         mvc.perform(get("/api/usuarios/me")).andExpect(status().isUnauthorized());
 
+        // El catálogo es público (se usa en el registro); las recomendaciones personales no
+        mvc.perform(get("/api/recomendaciones/catalogo-habilidades"))
+                .andExpect(r -> org.junit.jupiter.api.Assertions.assertNotEquals(401, r.getResponse().getStatus()));
+        mvc.perform(get("/api/recomendaciones/proyectos")).andExpect(status().isUnauthorized());
+
         enviar(post("/api/auth/registro/alumno"), null, """
                 {"correo":"seguridad@test.com","password":"Alumno123","numeroControl":"20249999",
                  "nombreCompleto":"Eva","carrera":"ISC","semestre":8}""")
