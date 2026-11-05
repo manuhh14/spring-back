@@ -3,6 +3,7 @@ services:
     name: residencias-api
     runtime: docker
     plan: free
+    region: ohio
     healthCheckPath: /v3/api-docs
     envVars:
       - key: DB_URL
