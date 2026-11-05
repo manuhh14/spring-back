@@ -1,0 +1,8 @@
+.env
+.git
+.idea
+.vscode
+bruno
+target
+uploads
+*.md

@@ -30,6 +30,37 @@ API para gestionar las residencias profesionales: registro de alumnos y empresas
 
 3. Abre la documentación interactiva en <http://localhost:8080/swagger-ui.html>. Haz login en `POST /api/auth/login`, copia el `token` y pégalo en **Authorize**.
 
+## Despliegue en Render
+
+El proyecto incluye un `Dockerfile` y un `render.yaml`. La base de datos se aloja aparte (por ejemplo en Neon), porque la gratuita de Render caduca a los 30 días.
+
+1. Crea la base de datos y convierte su cadena de conexión al formato JDBC. Usuario y contraseña van en sus propias variables:
+
+   ```
+   DB_URL=jdbc:postgresql://<host>/<base>?sslmode=require
+   ```
+
+2. Sube el código a GitHub. En Render elige **New > Blueprint** y selecciona el repositorio.
+3. Render pedirá los valores de las variables. `JWT_SECRET` se genera solo.
+
+   | Variable | Valor |
+   |---|---|
+   | `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` | Datos de la base de datos |
+   | `ADMIN_CORREO`, `ADMIN_PASSWORD` | Administrador inicial |
+   | `CORS_ORIGENES` | URL del frontend |
+   | `RECOMENDACIONES_URL` | URL pública del microservicio FastAPI |
+   | `RECOMENDACIONES_API_KEY` | La misma clave que su variable `API_KEY` |
+
+Para probar la imagen en local (dentro del contenedor, `127.0.0.1` es el propio contenedor):
+
+```bash
+docker build -t residencias-api .
+docker run --rm -p 8080:8080 --env-file .env \
+  -e DB_URL=jdbc:postgresql://host.docker.internal:5432/residencias-db residencias-api
+```
+
+En el plan gratuito el disco se borra en cada reinicio, así que los PDF subidos no se conservan.
+
 ## Tests
 
 ```bash
